@@ -7,8 +7,8 @@ import random
 pygame.init()
 vec = pygame.math.Vector2  # 2 for two dimensional
  
-HEIGHT = 1920
-WIDTH = 1080
+HEIGHT = 1080
+WIDTH = 1920
 ACC = 0.5
 FRIC = -0.12
 FPS = 60
