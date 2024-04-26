@@ -79,9 +79,9 @@ class Player(pygame.sprite.Sprite):
 class platform(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
-        self.surf = pygame.Surface((random.randint(50,100), 12))
-        self.surf.fill((random.randint(0,255),random.randint(0,255),random.randint(0,255)))
-        self.rect = self.surf.get_rect(center = (random.randint(0,WIDTH-10), random.randint(0, HEIGHT-30)))
+        self.surf = pygame.Surface((random.randint(50,150), 12))
+        self.surf.fill((random.randint(0,255),255,random.randint(0,255)))
+        self.rect = self.surf.get_rect(center = (random.randint(10,WIDTH), random.randint(0, HEIGHT)))
 
     def move(self):
         pass
@@ -98,13 +98,13 @@ def check(platform, groupies):
         C = False
 
 def plat_gen():
-    while len(platforms) < 6 :
-        width = random.randrange(50,100)
+    while len(platforms) < 9:
+        width = random.randrange(0,250)
         p  = platform()
         C = True
-        while C:             
+        while C:
             p = platform()
-            p.rect.center = (random.randrange(0, WIDTH - width),random.randrange(-50,0))
+            p.rect.center = (random.randrange(0,WIDTH),random.randrange(-50,100))
             C = check(p, platforms)
         platforms.add(p)
         all_sprites.add(p)
