@@ -2,20 +2,23 @@ import pygame
 from pygame.locals import *
 import sys
 import random
+import ctypes
 
 pygame.init()
 vec = pygame.math.Vector2  # 2 for two dimensional
- 
-HEIGHT = 450
-WIDTH = 400
+user32 = ctypes.windll.user32
+HEIGHT = 768
+WIDTH = 1024
 ACC = 0.5
 FRIC = -0.12
 FPS = 60
  
 FramePerSec = pygame.time.Clock()
  
-displaysurface = pygame.display.set_mode((WIDTH, HEIGHT))
+displaysurface = pygame.display.set_mode((WIDTH, HEIGHT),pygame.FULLSCREEN)
 pygame.display.set_caption("Game")
+fullscreen = True
+cmddown = False
 
 class Player(pygame.sprite.Sprite):
     def __init__(self):
@@ -25,7 +28,7 @@ class Player(pygame.sprite.Sprite):
         self.surf.fill((225,255,0))
         self.rect = self.surf.get_rect()
 
-        self.pos = vec((10, 360))
+        self.pos = vec((WIDTH/2, 360))
         self.vel = vec(0,0)
         self.acc = vec(0,0)
         self.jumping = False
@@ -77,7 +80,7 @@ class platform(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.surf = pygame.Surface((random.randint(50,100), 12))
-        self.surf.fill((0,255,0))
+        self.surf.fill((random.randint(0,255),random.randint(0,255),random.randint(0,255)))
         self.rect = self.surf.get_rect(center = (random.randint(0,WIDTH-10), random.randint(0, HEIGHT-30)))
 
     def move(self):
@@ -101,7 +104,7 @@ def plat_gen():
         C = True
         while C:             
             p = platform()
-            p.rect.center = (random.randrange(0, WIDTH - width),random.randrange(-50, 0))
+            p.rect.center = (random.randrange(0, WIDTH - width),random.randrange(-50,0))
             C = check(p, platforms)
         platforms.add(p)
         all_sprites.add(p)
@@ -138,9 +141,19 @@ while True:
         if event.type == pygame.KEYDOWN:    
             if event.key == pygame.K_SPACE:
                 P1.jump()
+            if event.key == pygame.K_ESCAPE:
+                if fullscreen == True:
+                    displaysurface = pygame.display.set_mode((WIDTH,HEIGHT))
+                    pygame.display.set_caption("GAME")
+                    fullscreen = False
+                else:
+                    displaysurface = pygame.display.set_mode((WIDTH,HEIGHT), pygame.FULLSCREEN)
+                    pygame.display.set_caption("GAME")
+                    fullscreen == True
         if event.type == pygame.KEYUP:    
             if event.key == pygame.K_SPACE:
                 P1.cancel_jump()
+                
     
     if P1.rect.top <= HEIGHT / 3:
         P1.pos.y += abs(P1.vel.y)
